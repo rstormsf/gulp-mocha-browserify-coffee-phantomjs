@@ -1,4 +1,3 @@
-require('../helper.coffee')
 sub = require('code.coffee')
 
 describe 'test', ->

@@ -26,6 +26,7 @@ gulp.task 'run-tests', ->
   b.transform(coffeeify)
   specs = glob.sync('./tests/specs/**.coffee').map (componentsDir) ->
     path.resolve componentsDir
+  b.add './tests/helper.coffee'
   b.add specs
 
   unless opts.watch
@@ -44,15 +45,19 @@ gulp.task 'run-tests', ->
     invert   : opts.invert
   }
 
-  syncStarted = false
   b.on 'bundle', (bundle) ->
     bundle.on 'end', ->
-      unless syncStarted and opts.watch
+      unless browserSync.active and opts.watch
         browserSync
           server:
             baseDir: 'www'
           notify: false
-        syncStarted = true
+          ghostMode:
+            clicks: false
+            forms: false
+          # tunnel: true
+          online: true
+          minify: false
         return
 
   bundle = ->
