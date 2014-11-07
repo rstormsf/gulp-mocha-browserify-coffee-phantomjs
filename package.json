@@ -1,0 +1,42 @@
+{
+  "name": "lib_temp",
+  "version": "0.0.1",
+  "description": "Gulp BrowserSync CoffeeScript Mocha",
+  "author": "Roman Storm rstormsf@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "brout": "^1.0.0",
+    "browser-sync": "^1.6.3",
+    "browserify": "^6.2.0",
+    "chai": "^1.9.2",
+    "coffee-script": "^1.8.0",
+    "coffeeify": "^0.7.0",
+    "glob": "^4.0.6",
+    "gulp": "^3.8.10",
+    "gulp-load-plugins": "^0.7.1",
+    "mocaccino": "^1.2.0",
+    "mocha": "^2.0.1",
+    "phantomic": "^1.0.1",
+    "phantomjs": "^1.9.12",
+    "require-dir": "^0.1.0",
+    "resolve": "^1.0.0",
+    "subarg": "^1.0.0",
+    "through2": "^0.6.3",
+    "vinyl-source-stream": "^1.0.0",
+    "watchify": "^2.1.1"
+  }, 
+  "keywords": [
+    "browserify",
+    "gulp",
+    "coffee",
+    "mocha",
+    "mocaccino",
+    "phantomjs",
+    "watchify"
+  ],
+  "homepage": "https://github.com/rstormsf/gulp-mocha-browserify-coffee-phantomjs.git",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rstormsf/gulp-mocha-browserify-coffee-phantomjs.git"
+  }
+}
