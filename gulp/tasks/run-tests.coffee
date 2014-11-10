@@ -6,14 +6,12 @@ source = require 'vinyl-source-stream'
 glob = require 'glob'
 path = require 'path'
 mocaccino = require 'mocaccino'
-subarg = require 'subarg'
 phantom = require '../phantom_helper'
 browserSync = require 'browser-sync'
 through = require 'through2'
-opts = subarg(process.argv.slice(2))
 
-gulp.task 'run-tests', ->
-  brOpts = 
+gulp.task 'run-tests',['coffeelint'], ->
+  brOpts =
     fullPaths: true
     extensions: ['.coffee']
     paths: [path.resolve './src']
@@ -29,47 +27,45 @@ gulp.task 'run-tests', ->
   b.add './tests/helper.coffee'
   b.add specs
 
-  unless opts.watch
-    opts.output = through()
-    opts.reporter = 'spec'
-    opts.phantomjs ?= './node_modules/phantomjs/bin/phantomjs'
-    b.plugin phantom, opts
+  unless argv.watch
+    argv.output = through()
+    argv.reporter = 'spec'
+    argv.phantomjs ?= './node_modules/phantomjs/bin/phantomjs'
+    b.plugin phantom, argv
 
   b.plugin mocaccino, {
-    reporter : opts.reporter or 'html'
-    ui       : opts.ui or 'bdd'
-    node     : opts.node
+    reporter : argv.reporter or 'html'
+    ui       : argv.ui or 'bdd'
+    node     : argv.node
     yields   : 250
     timeout  : 2000000000000
-    grep     : opts.grep
-    invert   : opts.invert
+    grep     : argv.grep
+    invert   : argv.invert
   }
 
   b.on 'bundle', (bundle) ->
     bundle.on 'end', ->
-      unless browserSync.active and opts.watch
+      unless browserSync.active and argv.watch
         browserSync
           server:
-            baseDir: 'www'
+            baseDir: 'debug'
           notify: false
-          ghostMode:
-            clicks: false
-            forms: false
-          # tunnel: true
+          files: ["debug/*.js"]
+          tunnel: argv.tunnel and argv.watch
           online: true
           minify: false
         return
 
   bundle = ->
-    if (!bundling) 
+    if (!bundling)
       bundling = true
       b.bundle()
-       .pipe source 'bundled.js'
-       .pipe gulp.dest './www'
-       .pipe(browserSync.reload({stream: true}))
-    else 
-      queued = true  
-  if opts.watch
+        .pipe source 'bundled.js'
+        .pipe gulp.dest './debug'
+        .pipe(browserSync.reload({stream: true}))
+    else
+      queued = true
+  if argv.watch
     w = watchify(b)
     bundling = false
     queued = false
@@ -78,9 +74,7 @@ gulp.task 'run-tests', ->
     b.on 'bundle', (out) ->
       out.on 'end', ->
         bundling = false
-        if (queued) 
+        if (queued)
           queued = false
           setImmediate(bundle)
   bundle()
-
-gulp.task 'default', ['run-tests']
