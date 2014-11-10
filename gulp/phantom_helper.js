@@ -1,5 +1,4 @@
 /*
- * This code is borrowedfrom https://github.com/mantoni/mochify.js/
  * mochify.js
  *
  * Copyright (c) 2014 Maximilian Antoni <mail@maxantoni.de>
